@@ -1,6 +1,6 @@
 # Django Elective, Mandatory Assignment 01
 BA, Web Development / Copenhagen School of Design & Technology
-***
+
 ## Library system
 
 __Requirements__
@@ -12,7 +12,7 @@ __Requirements__
 * Note: this project uses Bootstrap4
 
 
-#### How to use project
+### How to use project
 
 __SETUP__
 * Create virtual environment and cd into it
@@ -20,7 +20,7 @@ __SETUP__
 * To install this project's requirements, run ```pip install -r requirements.txt```
 * Go nuts!
 
-#### Documentation
+### Documentation
 
 __APPS__
 * Config: The inital project app created on ```django-admin startproject config```
