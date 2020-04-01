@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if object %}
+<div class="">
+	<h4>{{ object.title }}, {{ object.first_published }}</h4>
+</div>
+<div class="mb-3">
+	<small class="muted">Author:
+		<a href="{% url 'author-detail' book.author.pk %}">{{ object.author }}</a>
+	</small>
+</div>
+<div class="mb-3">
+	<p>{{ object.summary }}</p>
+</div>
+<div class="mb-3">
+	<p>MyLibrary has {{ object.bookinstance_set.count }} copies of "{{object.title}}":</p>
+	{% for copy in object.bookinstance_set.all %}
+	<div class="book-instance">
+		<strong>{{ copy.book }}</strong>
+		<ul>
+			<li>Publisher: {{copy.publisher}}</li>
+			{% if copy.status != 'A' %}
+			<li>
+				<small class="text-secondary">This copy is not available</small>
+			</li>
+			{% else %}
+		</ul>
+	</div>
+	{% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

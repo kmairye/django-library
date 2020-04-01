@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% load crispy_forms_tags %}
+<h2>Log in</h2>
+<form method="post">
+	{% csrf_token %}
+	<div class="input-pair">
+		<label for="txtUsername">Username</label>
+		<input type="text" name="txtUsername" id="txtUsername">
+	</div>
+	<div class="input-pair">
+		<label for="txtPassword">Password</label>
+		<input type="password" name="txtPassword" id="txtPassword">
+	</div>
+	<button class="btn btn-primary">Log in</button>
+</form>
+{% endblock %}

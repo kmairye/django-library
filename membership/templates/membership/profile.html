@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if just_loaned %}
+{{ just_loaned }}
+{% endif %}
+<h2 class="mb-4">Hi, {{user}}</h2>
+<div class="mb-4">
+	<div class="">
+		<p><strong>Profile details:</strong></p>
+	</div>
+	<form action="">
+		<div class="input-pair form-group">
+			<label for="txtUsernameUpdate">Username</label>
+			<input class="form-control" type="text" name="txtUsernameUpdate" id="txtUsernameUpdate"
+				placeholder="{{ user.username }}">
+		</div>
+		<div class="input-pair form-group">
+			<label for="txtFirstnameUpdate">First name</label>
+			<input class="form-control" type="text" name="txtFirstnameUpdate" id="txtFirstnameUpdate"
+				placeholder="{{ user.first_name }}">
+		</div>
+		<div class="input-pair form-group">
+			<label for="txtLastnameUpdate">Last name</label>
+			<input class="form-control" type="text" name="txtLastnameUpdate" id="txtLastnameUpdate"
+				placeholder="{{ user.last_name }}">
+		</div>
+		<div class="input-pair form-group">
+			<label for="txtPasswordUpdate">Password</label>
+			<input class="form-control" type="password" name="txtPasswordUpdate" id="txtPasswordUpdate"
+				placeholder="{{ user.password }}">
+		</div>
+		<div class="form-group">
+			<button class="btn btn-warning">Save changes</button>
+		</div>
+	</form>
+</div>
+
+{% if user_loan_objects %}
+<div class="mb-4">
+
+	<div class="">
+		<p><strong>Current loans:</strong></p>
+	</div>
+	<table class="table border">
+		<thead>
+			<tr>
+				<th scope="col">Book</th>
+				<th scope="col">Date of loan</th>
+				<th scope="col">Date of return</th>
+				<th scope="col">Status</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for loan in user_loan_objects  %}
+			<tr>
+				<td>{{loan.book}}</td>
+
+				<td>{{loan.date_of_loan}}</td>
+				<td>{{loan.date_of_return}}</td>
+				{% if loan.is_overdue != True %}
+				<td class="text-success">OK</td>
+				{% else %}
+				<td class="text-danger">OD</td>
+				{% endif %}
+
+				<td><a href="">Details</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% else %}
+<p><em>You don't have any loans at the moment.</em></p>
+</div>
+{% endif %}
+
+
+<div class="mb-4">
+	<form id="loanBookForm" action="{% url 'loan-book' %}" method="POST">{% csrf_token %}
+		<input type="hidden" name="userID" value="{{ user.pk }}">
+		<select name="bookID" id="" form="loanBookForm">
+			{% for copy in all_book_instances %}
+			<option value="{{ copy.pk }}">{{ copy.book }}</option>
+
+			{% endfor %}
+		</select>
+		<button class="btn btn-primary">Loan</button>
+	</form>
+</div>
+
+{% endblock content %}
