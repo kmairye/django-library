@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from library.models import BookInstance
 from django.db.models.signals import post_save
@@ -10,6 +11,9 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     staff = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse("member-detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return f'{self.user.last_name}, {self.user.first_name}'

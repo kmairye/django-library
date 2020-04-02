@@ -4,12 +4,29 @@ from django.views.generic import DetailView, ListView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
+
 from .forms import ModifiedUserCreationForm
-from .models import Loan, BookInstance
+from .models import Loan, BookInstance, Profile
 import datetime
 
 # VIEWS
 # Latest at the top, oldest at the bottom
+
+
+class OutstandingListView(ListView):
+    model = Loan
+    # queryset = Loan.objects.filter(returned=False)
+    template_name = 'membership/outstanding-list.html'
+
+
+class MemberListView(ListView):
+    model = User
+    template_name = 'membership/user-list.html'
+
+
+class MemberDetailView(DetailView):
+    model = Profile
+    template_name = 'membership/user-detail.html'
 
 
 @login_required

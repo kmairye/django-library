@@ -11,4 +11,5 @@ class LoanAdmin(admin.ModelAdmin):
     """ Customize the way loans are displayed in admin page """
     list_display = ('book', 'user', 'is_overdue',
                     'date_of_loan', 'date_of_return', 'returned')
-    fields = ['book', 'user', 'date_of_loan', 'date_of_return', 'returned']
+    fields = ['book', 'user', 'date_of_loan',
+              'date_of_return', 'returned', 'is_overdue']

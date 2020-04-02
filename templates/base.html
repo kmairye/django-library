@@ -24,7 +24,8 @@
 					<a href="{% url 'book-list' %}" class="ml-3">Titles</a>
 					<a href="{% url 'author-list' %}" class="ml-3">Authors</a>
 					{% if user.is_staff %}
-					<a href="" class="ml-3">All outstanding</a>
+					<a href="{% url 'outstanding-list' %}" class="ml-3">All outstanding</a>
+					<a href="{% url 'member-list' %}" class="ml-3">All members</a>
 					{% endif %}
 				</div>
 			</div>
