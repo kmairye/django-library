@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'library.apps.LibraryConfig',  # local app
     'membership.apps.MembershipConfig',  # local app
 
-    'crispy_forms',  # 3rd party
 ]
 
 MIDDLEWARE = [
@@ -131,5 +130,3 @@ STATICFILES_DIRS = [
 
 
 # CSS to use when working with crispy forms
-
-CRISPY_TEMPLATE_PACK = "bootstrap4"

@@ -6,11 +6,26 @@ from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from .forms import ModifiedUserCreationForm
 from .models import Loan, BookInstance
+import datetime
 
 # VIEWS
 # Latest at the top, oldest at the bottom
 
 
+@login_required
+def loan_return(request):
+    if request.method == "POST":
+        match_loan_id = request.POST["intLoanID"]
+        loan_obj = get_object_or_404(Loan, pk=match_loan_id)
+        loan_obj.book.status = 'A'
+        loan_obj.returned = True
+        loan_obj.date_of_return = datetime.date.today()
+        loan_obj.book.save()
+        loan_obj.save()
+    return HttpResponseRedirect(reverse('profile'))
+
+
+@login_required
 def loan_book(request):
     if request.method == "POST":
         match_book_id = request.POST["bookID"]
@@ -28,10 +43,22 @@ def loan_book(request):
 
 
 @login_required()
+def profile_update(request):
+    if request.method == "POST":
+        user = request.user
+        newFirstname = request.POST["txtFirstnameUpdate"]
+        newLastname = request.POST["txtLastnameUpdate"]
+        user.first_name = newFirstname
+        user.last_name = newLastname
+        user.save()
+        return HttpResponseRedirect(reverse('profile'))
+
+
+@login_required()
 def profile(request):
     user = request.user
     staff_bool = user.profile.staff
-    user_loans = Loan.objects.filter(user=user)
+    user_loans = Loan.objects.filter(user=user, returned=False)
     all_book_instances = BookInstance.objects.all()
     context = {
         'user': user,
@@ -62,7 +89,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('index')
+            return HttpResponseRedirect(reverse('profile'))
         else:
             # Pass error message
             context = {

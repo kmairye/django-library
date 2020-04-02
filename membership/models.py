@@ -28,12 +28,12 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Loan(models.Model):
     # make sure each book can be loaned ONCE at a time
-    book = models.OneToOneField(BookInstance, on_delete=models.CASCADE)
+    book = models.ForeignKey(BookInstance, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_of_loan = models.DateField(default=datetime.date.today())
     date_of_return = models.DateField(
         default=(datetime.date.today() + datetime.timedelta(weeks=3)))
-
+    returned = models.BooleanField(default=False)
     @property
     def is_overdue(self):
         if self.date_of_return and datetime.date.today() > self.date_of_return:
