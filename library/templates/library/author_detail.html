@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if object %}
+<div class="">
+	<h4>{{ object.first_name }} {{ object.last_name }}</h4>
+</div>
+<div class="">
+</div>
+<div class="">
+	<p>Authorship:</p>
+	<ul>
+		{% for book in author.book_set.all %}
+		<li>
+			<a href="{% url 'book-detail' book.pk %}">
+				{{book.title}}
+			</a>
+			<span>
+				{{book.first_published}} - ({{ book.bookinstance_set.count }})
+			</span>
+		</li>
+		{% endfor %}
+	</ul>
+</div>
+{% endif %}
+{% endblock %}

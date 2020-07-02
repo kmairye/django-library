@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if object_list %}
+<h2 class="">All members:</h2>
+<ul class="">
+	{% for member in object_list %}
+	<li class="">
+		<a href="{{ member.profile.get_absolute_url }}">{{ member.last_name }}, {{ member.first_name }}</p>
+	</li>
+	{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

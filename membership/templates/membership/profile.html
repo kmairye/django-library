@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if just_loaned %}
+{{ just_loaned }}
+{% endif %}
+<h2 class="mb-4">Hi, {{user.first_name}}</h2>
+<div class="mb-4 pb-2">
+	<div class="pt-4">
+		<p><strong>Profile details</strong></p>
+	</div>
+	<form action="{% url 'profile-update' %}" method="POST">{% csrf_token %}
+		<div class="form-group row">
+			<div class="input-pair col">
+				<label for="txtFirstnameUpdate">First name</label>
+				<input class="form-control" type="text" name="txtFirstnameUpdate" id="txtFirstnameUpdate"
+					placeholder="{{ user.first_name }}">
+			</div>
+			<div class="input-pair col">
+				<label for="txtLastnameUpdate">Last name</label>
+				<input class="form-control" type="text" name="txtLastnameUpdate" id="txtLastnameUpdate"
+					placeholder="{{ user.last_name }}">
+			</div>
+		</div>
+		<div class="form-group">
+			<button class="btn btn-warning">Save changes</button>
+		</div>
+	</form>
+</div>
+
+<div class="mb-4 pb-2">
+	{% if user_loan_objects %}
+	<div class="pt-4">
+		<p><strong>Current loans ({{user_loan_objects.count}})</strong></p>
+	</div>
+	<table class="table border">
+		<thead>
+			<tr>
+				<th scope="col">Book</th>
+				<th scope="col">Date of loan</th>
+				<th scope="col">Date of return</th>
+				<th scope="col">Status</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for loan in user_loan_objects  %}
+			{% if loan.returned != True %}
+
+
+			<tr>
+				<td>{{loan.book}}</td>
+
+				<td>{{loan.date_of_loan}}</td>
+				<td>{{loan.date_of_return}}</td>
+				{% if loan.is_overdue != True %}
+				<td class="text-success">OK</td>
+				{% else %}
+				<td class="text-danger">OD</td>
+				{% endif %}
+
+				<td>
+					<form action="{% url 'loan-return' %}" method="POST"> {% csrf_token %}
+						<input type="hidden" name="intLoanID" value="{{ loan.pk }}">
+						<button class="btn-link text-danger">Return</button>
+					</form>
+				</td>
+			</tr>
+			{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p><em>You don't have any loans at the moment.</em></p>
+	{% endif %}
+</div>
+
+<div class="mb-4 pb-2">
+	<div class="pt-4">
+		<p><strong>New loan</strong><small> (Choose from available titles in the drop down menu)</small></p>
+
+	</div>
+	<form id="loanBookForm" action="{% url 'loan-book' %}" method="POST">{% csrf_token %}
+		<input type="hidden" name="userID" value="{{ user.pk }}">
+		<div class="form-group">
+			<label for="selectBookInstance">Select title</label>
+			<select name="bookID" id="selectBookInstance" form="loanBookForm" class="form-control">
+				{% for copy in all_book_instances %}
+				{% if copy.status != 'N' %}
+				<option value="{{ copy.pk }}">{{ copy.book }}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+
+		</div>
+		<div class="form-group">
+			<button class="btn btn-primary form-control">Loan</button>
+		</div>
+
+	</form>
+</div>
+</div>
+
+</div>
+
+
+
+{% endblock content %}

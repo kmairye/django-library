@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if object_list %}
+<h2 class="">All outstanding:</h2>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Book Instance</th>
+			<th>User</th>
+			<th>Date of loan</th>
+			<th>Expected return</th>
+			<th>Overdue</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for loan in object_list %}
+		<tr>
+			<td>
+				{{ loan.book }}
+			</td>
+			<td>
+				{{ loan.user }}
+			</td>
+			<td>
+				{{ loan.date_of_loan }}
+			</td>
+			<td>
+				{{ loan.date_of_return }}
+			</td>
+			{% if loan.is_overdue != True %}
+			<td class="text-success"> OK
+				{% else %}
+			<td class="text-danger">OD
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endif %}
+{% endblock %}

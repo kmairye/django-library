@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% load static %}
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="{% static 'css/style.css'%}">
+	{% block title %}<title>Library</title>{% endblock %}
+</head>
+
+<body>
+	<div class="container-fluid">
+		<header class="container-fluid row align-items-center mx-auto border-bottom">
+			<div class="col d-flex align-items-center">
+				<h1 class="pt-2 pb-2">MyLibrary</h1>
+			</div>
+			<div class="col d-flex justify-content-end">
+				<div class="pt-2 pb-2">
+					<a href="{% url 'index' %}" class="ml-3">Home</a>
+					<a href="{% url 'book-list' %}" class="ml-3">Titles</a>
+					<a href="{% url 'author-list' %}" class="ml-3">Authors</a>
+					{% if user.is_staff %}
+					<a href="{% url 'outstanding-list' %}" class="ml-3">All outstanding</a>
+					<a href="{% url 'member-list' %}" class="ml-3">All members</a>
+					{% endif %}
+				</div>
+			</div>
+		</header>
+		<main class="container-fluid row mx-auto mt-4">
+			<div class="col-3">
+				<div class="mb-3">
+					{% if user.is_authenticated %}
+					<div class="mb-3">
+						<a href="{% url 'profile' %}" class="">My account</a>
+					</div>
+					<div class="mb-3">
+						<a href="{% url 'logout' %}" class="">Log out</a>
+					</div>
+					{% else %}
+					<div class="mb-3">
+						<a href="{% url 'login' %}" class="">Log in</a>
+					</div>
+					<div class="mb-3">
+						<a href="{% url 'signup' %}" class="">Sign up</a>
+					</div>
+					{% endif %}
+				</div>
+
+			</div>
+			<div class="col-9">
+				{% block content %}
+
+				{% endblock %}
+
+			</div>
+		</main>
+	</div>
+</body>
+
+</html>
